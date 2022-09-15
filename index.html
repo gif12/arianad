@@ -1,0 +1,136 @@
+<html>
+<head>
+	<title>آریانا</title>
+	<meta charset="utf-8">
+	<meta name="description" content="سامانه متن به گفتار فارسی آریانا - تبدیل متن به صوت" />
+	<meta name="keywords" content="ariana, صوت به متن, متن خوان, آریانا, tts, متن به گفتار" />
+	<LINK href="css/main.css" rel="stylesheet" type="text/css">
+	<LINK href="css/rangeslider.css" rel="stylesheet" type="text/css">
+	<LINK href="css/ion.rangeSlider.skinHTML5.css" rel="stylesheet" type="text/css">
+	<LINK href="css/ion.rangeSlider.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="css/mediaelementplayer.min.css" />
+</head>
+<body>
+	<div id="formMain" >
+		<fieldset>
+			<legend>دموی متن به گفتار فارسی آریانا3</legend>
+			<div class="main">
+				<ol>
+					<div style="float:right;">
+						<input id="speakerFemale" name="speaker" type="radio" value="Female1"><label for="speakerFemale">زن</label>
+						<input id="speakerMale" name="speaker" type="radio" value="Male1" checked="checked"><label for="speakerMale">مرد 1</label>
+						<input id="speakerMale2" name="speaker" type="radio" value="Male2"><label for="speakerMale2">مرد 2</label>
+					</div>
+					
+					<div class="buttdiv">
+						<button title="فتحه" class="alaembtn" onclick="insertAtCaret('text', 'َ');return false;">-َ</button>
+						<button title="کسره" class="alaembtn" onclick="insertAtCaret('text', 'ِ');return false;">-ِ</button>
+						<button title="ضمه" class="alaembtn" onclick="insertAtCaret('text', 'ُ');return false;">-ُ</button>
+						<button title="سکون" class="alaembtn" onclick="insertAtCaret('text', 'ْ');return false;">-ْ</button>
+						<button title="تشدید" class="alaembtn" onclick="insertAtCaret('text', 'ّ');return false;">-ّ</button>
+						<button title="نیم‌فاصله" class="alaembtn" onclick="insertAtCaret('text','‌');return false;">-|-</button>
+					</div>
+					
+					<li>
+						<textarea name="text" id="text" onkeyup="countChar(this)" placeholder="متن خود را وارد نمایید..." required="required"></textarea>
+					</li>
+					<li style="display: inline-block;width: 100%;">
+						<div style="padding-left:10px;float:left;">باقیمانده:<span id="charNum">200</span></div>
+						<div style="padding-right:26px; float:right;">
+							<input id="puncState" type="checkbox" name="punc" ><label for="puncState">خواندن علائم نگارشی</label>
+						</div>
+					
+					</li>
+					<li id="errBox" style="display:none;text-align: center; background-color:#e14343;border: 2px solid #9c0a0a;border-radius: 8px;margin: 5px 0 5px;padding: 6px;color: #ffffff; font-weight: 600;background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0, #af2525),color-stop(1, #e14343));">
+						<code style="font-family:yekan;">محدودیت زمانی برای شما فعال شده است. لطفاً 10 دقیقه بعد تلاش نمایید.</code>
+					</li>
+				</ol>
+		
+			</div>
+		
+		<audio id="player" controls style="width:100%; display:none;" >
+			<source src="index.html" type="audio/wav">
+			Your browser does not support the audio tag.
+		</audio>
+	
+		<center>
+			<div class="recaptcha">
+				<input type="text" name="captcha" id="captcha" class="demoInputBox" placeholder="کد امنیتی را وارد نمایید">
+				<img id="captcha_code" src="captcha_code.php" style="display: inline-block; vertical-align: middle;" />
+				<button type="button" name="submit" id="btnRefresh" class="btnRefresh" onClick="refreshCaptcha();">
+					<img src="img/refresh.png"/>
+				</button>
+				<br>
+				<span id="captcha-info" class="info"></span>
+			</div>
+			<button id="btnReadText" class="speechbtn" onClick="playToggle();">
+				<div id="win8" class="windows8">
+					<div class="wBall" id="wBall_1">
+						<div class="wInnerBall"></div>
+					</div>
+					<div class="wBall" id="wBall_2">
+						<div class="wInnerBall"></div>
+					</div>
+					<div class="wBall" id="wBall_3">
+						<div class="wInnerBall"></div>
+					</div>
+					<div class="wBall" id="wBall_4">
+						<div class="wInnerBall"></div>
+					</div>
+					<div class="wBall" id="wBall_5">
+						<div class="wInnerBall"></div>
+					</div>
+				</div>بخوان
+			</button>
+		</center>
+		
+		<ol style="padding-top:20px; padding-bottom: 15px;">
+			<div style="padding:0 35px">
+	                    <span class="irs-min2">کند</span>
+	                    	<input type="text" id="Speedi" name="Speedi" value="" />
+	                    <span class="irs-max2">تند</span>
+	                    
+	                    <span class="irs-min2">بم</span>
+	                    	<input type="text" id="Tonei" name="Tonei" value="" />
+	                    <span class="irs-max2">زیر</span>
+	                    
+	                    <span class="irs-min2">پایین</span>
+	                    	<input type="text" id="Pitchi" name="Pitchi" value="" />
+	                    <span class="irs-max2">بالا</span>
+	                    
+	                    <span class="irs-min2">کم</span>
+	                    	<input type="text" id="Voli" name="Voli" value="" />
+	                    <span class="irs-max2">زیاد</span>
+			</div>
+			<div style="text-align:center;">
+				<button id="btnReset" class="btnReset" onclick="resetSliders(); return false;"> تنظیمات پیشفرض</button>
+			</div>
+		</ol>
+		
+		</fieldset>
+	</div>
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/rangeslider.min.js"></script>
+	<script src="js/ion.rangeSlider.min.js"></script>
+	<script src="js/jquery-ui-1.8.21.custom.min.js"></script>
+	<script src="js/mediaelement-and-player.min.js"></script>
+	<script src="js/arianatts.js"></script>
+	
+	<script>
+	
+		function validateContact() {
+			var valid = true;	
+			if(!$("#captcha").val()) {
+				$("#captcha-info").html("وارد نمودن کد امنیتی الزامیست");
+				$("#captcha").css('background-color','#FFFFDF');
+				valid = false;
+			}
+			return valid;
+		}
+		function refreshCaptcha() {
+			$("#captcha_code").attr('src','captcha_code.php?_t='+new Date().getTime());
+		}
+
+	</script>
+</body>
+</html>
